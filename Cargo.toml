@@ -1,0 +1,8 @@
+[package]
+name = "time"
+description = "Utilities for handling dates, times, and time zones"
+authors = ["Lance Hart <me@lancehart.ca>"]
+edition = "2021"
+repository = "https://github.com/shipsimfan/lib-time"
+license = "GPL-3.0-or-later"
+publish = false
