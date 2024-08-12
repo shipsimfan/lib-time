@@ -5,3 +5,11 @@ version = 3
 [[package]]
 name = "time"
 version = "0.0.0"
+dependencies = [
+ "win32",
+]
+
+[[package]]
+name = "win32"
+version = "0.1.0"
+source = "git+https://github.com/shipsimfan/lib-win32#b221784ae97fc8b0303858baf293592c7c050f19"

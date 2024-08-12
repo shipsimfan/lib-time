@@ -8,10 +8,16 @@ mod named;
 mod no;
 mod simple;
 
+#[cfg(target_os = "windows")]
+mod windows;
+
 pub use iso8601::ISO8601TimeZoneDisplay;
 pub use named::NamedTimeZone;
 pub use no::NoTimeZone;
 pub use simple::SimpleTimeZone;
+
+#[cfg(target_os = "windows")]
+use windows::get_local_time_zone;
 
 /// A time zone is an offset, in minutes, from a standard time zone: Universal Coordinated Time
 pub trait TimeZone:
@@ -22,7 +28,7 @@ pub trait TimeZone:
 
     /// Attempt to get the local time zone
     #[cfg(feature = "local")]
-    fn local() -> Option<Self>;
+    fn local() -> Self;
 
     /// The offset, in minutes, from UTC of this time zone
     fn offset(&self) -> i16;

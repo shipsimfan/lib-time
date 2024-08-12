@@ -15,8 +15,14 @@ impl TimeZone for SimpleTimeZone {
     const UTC: Self = SimpleTimeZone::new(0);
 
     #[cfg(feature = "local")]
-    fn local() -> Option<Self> {
-        todo!()
+    fn local() -> Self {
+        #[cfg(feature = "alloc")]
+        let (offset, _) = super::get_local_time_zone();
+
+        #[cfg(not(feature = "alloc"))]
+        let offset = super::get_local_time_zone();
+
+        SimpleTimeZone::new(offset)
     }
 
     fn offset(&self) -> i16 {

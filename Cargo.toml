@@ -6,9 +6,13 @@ edition = "2021"
 repository = "https://github.com/shipsimfan/lib-time"
 license = "GPL-3.0-or-later"
 publish = false
+resolver = "2"
 
 [features]
 default = ["alloc", "local"]
 
 alloc = []
-local = []
+local = ["dep:win32"]
+
+[target.'cfg(windows)'.dependencies]
+win32 = { git = "https://github.com/shipsimfan/lib-win32", optional = true }

@@ -15,8 +15,8 @@ impl TimeZone for NoTimeZone {
     const UTC: Self = NoTimeZone;
 
     #[cfg(feature = "local")]
-    fn local() -> Option<Self> {
-        None
+    fn local() -> Self {
+        NoTimeZone
     }
 
     fn offset(&self) -> i16 {

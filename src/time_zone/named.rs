@@ -81,9 +81,18 @@ impl Display for NamedTimeZone {
 impl TimeZone for NamedTimeZone {
     const UTC: Self = NamedTimeZone::new(0, "UTC");
 
-    #[cfg(feature = "local")]
-    fn local() -> Option<Self> {
-        todo!()
+    #[cfg(all(feature = "local", feature = "alloc"))]
+    fn local() -> Self {
+        let (offset, name) = super::get_local_time_zone();
+
+        NamedTimeZone::new_owned(offset, name)
+    }
+
+    #[cfg(all(feature = "local", not(feature = "alloc")))]
+    fn local() -> Self {
+        let offset = super::get_local_time_zone();
+
+        NamedTimeZone::new(offset, "")
     }
 
     fn offset(&self) -> i16 {
