@@ -9,10 +9,12 @@ publish = false
 resolver = "2"
 
 [features]
-default = ["alloc", "local"]
+default = ["std", "local", "now"]
 
 alloc = []
 local = ["dep:win32"]
+now = []
+std = ["alloc"]
 
 [target.'cfg(windows)'.dependencies]
 win32 = { git = "https://github.com/shipsimfan/lib-win32", optional = true }
