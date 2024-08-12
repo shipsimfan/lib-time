@@ -1,5 +1,8 @@
 use super::TimeZone;
-use std::{borrow::Cow, fmt::Display, hash::Hash};
+use core::{fmt::Display, hash::Hash};
+
+#[cfg(feature = "alloc")]
+use alloc::borrow::Cow;
 
 /// A time zone with a name
 #[derive(Debug, Clone)]
@@ -8,7 +11,12 @@ pub struct NamedTimeZone {
     offset: i16,
 
     /// The name of this time zone
+    #[cfg(feature = "alloc")]
     name: Cow<'static, str>,
+
+    /// The name of this time zone
+    #[cfg(not(feature = "alloc"))]
+    name: &'static str,
 }
 
 impl NamedTimeZone {
@@ -16,12 +24,16 @@ impl NamedTimeZone {
     pub const fn new(offset: i16, name: &'static str) -> Self {
         NamedTimeZone {
             offset,
+            #[cfg(feature = "alloc")]
             name: Cow::Borrowed(name),
+            #[cfg(not(feature = "alloc"))]
+            name,
         }
     }
 
     /// Creates a new [`NamedTimeZone`]
-    pub const fn new_owned(offset: i16, name: String) -> Self {
+    #[cfg(feature = "alloc")]
+    pub const fn new_owned(offset: i16, name: alloc::string::String) -> Self {
         NamedTimeZone {
             offset,
             name: Cow::Owned(name),
@@ -43,25 +55,25 @@ impl PartialEq for NamedTimeZone {
 impl Eq for NamedTimeZone {}
 
 impl PartialOrd for NamedTimeZone {
-    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+    fn partial_cmp(&self, other: &Self) -> Option<core::cmp::Ordering> {
         Some(self.cmp(other))
     }
 }
 
 impl Ord for NamedTimeZone {
-    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+    fn cmp(&self, other: &Self) -> core::cmp::Ordering {
         self.offset.cmp(&other.offset)
     }
 }
 
 impl Hash for NamedTimeZone {
-    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+    fn hash<H: core::hash::Hasher>(&self, state: &mut H) {
         self.offset.hash(state)
     }
 }
 
 impl Display for NamedTimeZone {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.write_str(&self.name)
     }
 }
@@ -69,6 +81,7 @@ impl Display for NamedTimeZone {
 impl TimeZone for NamedTimeZone {
     const UTC: Self = NamedTimeZone::new(0, "UTC");
 
+    #[cfg(feature = "local")]
     fn local() -> Option<Self> {
         todo!()
     }

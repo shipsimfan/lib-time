@@ -1,4 +1,4 @@
-use std::{
+use core::{
     fmt::{Debug, Display},
     hash::Hash,
 };
@@ -21,6 +21,7 @@ pub trait TimeZone:
     const UTC: Self;
 
     /// Attempt to get the local time zone
+    #[cfg(feature = "local")]
     fn local() -> Option<Self>;
 
     /// The offset, in minutes, from UTC of this time zone

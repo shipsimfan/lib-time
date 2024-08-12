@@ -14,6 +14,7 @@ impl NoTimeZone {
 impl TimeZone for NoTimeZone {
     const UTC: Self = NoTimeZone;
 
+    #[cfg(feature = "local")]
     fn local() -> Option<Self> {
         None
     }
@@ -23,8 +24,8 @@ impl TimeZone for NoTimeZone {
     }
 }
 
-impl std::fmt::Display for NoTimeZone {
-    fn fmt(&self, _: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+impl core::fmt::Display for NoTimeZone {
+    fn fmt(&self, _: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         Ok(())
     }
 }

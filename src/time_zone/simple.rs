@@ -14,6 +14,7 @@ impl SimpleTimeZone {
 impl TimeZone for SimpleTimeZone {
     const UTC: Self = SimpleTimeZone::new(0);
 
+    #[cfg(feature = "local")]
     fn local() -> Option<Self> {
         todo!()
     }
@@ -23,8 +24,8 @@ impl TimeZone for SimpleTimeZone {
     }
 }
 
-impl std::fmt::Display for SimpleTimeZone {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+impl core::fmt::Display for SimpleTimeZone {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         self.iso8601().fmt(f)
     }
 }
