@@ -1,7 +1,7 @@
 use win32::TIME_ZONE_INFORMATION;
 use win32::{TIME_ZONE_ID_DAYLIGHT, TIME_ZONE_ID_STANDARD, TIME_ZONE_ID_UNKNOWN};
 
-#[cfg(feature = "alloc")]
+#[cfg(all(feature = "alloc", feature = "local"))]
 pub(super) fn get_local_time_zone() -> (i16, alloc::string::String) {
     let mut time_zone_info = TIME_ZONE_INFORMATION::default();
     let result = unsafe { win32::GetTimeZoneInformation(&mut time_zone_info) };
@@ -37,7 +37,7 @@ pub(super) fn get_local_time_zone() -> (i16, alloc::string::String) {
     (-(bias as i16), name)
 }
 
-#[cfg(not(feature = "alloc"))]
+#[cfg(not(feature = "alloc", feature = "local"))]
 pub(super) fn get_local_time_zone() -> i16 {
     let mut time_zone_info = TIME_ZONE_INFORMATION::default();
     let result = unsafe { win32::GetTimeZoneInformation(&mut time_zone_info) };

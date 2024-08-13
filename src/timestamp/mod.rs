@@ -3,8 +3,14 @@ use crate::{SimpleTimeZone, TimeZone};
 #[cfg(target_os = "windows")]
 mod windows;
 
+#[cfg(target_os = "linux")]
+mod linux;
+
 #[cfg(target_os = "windows")]
 use windows::get_system_time;
+
+#[cfg(target_os = "linux")]
+use linux::get_system_time;
 
 /// A point in time
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]

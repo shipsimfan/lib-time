@@ -11,6 +11,9 @@ mod simple;
 #[cfg(target_os = "windows")]
 mod windows;
 
+#[cfg(all(target_os = "linux"))]
+mod linux;
+
 pub use iso8601::ISO8601TimeZoneDisplay;
 pub use named::NamedTimeZone;
 pub use no::NoTimeZone;
@@ -18,6 +21,9 @@ pub use simple::SimpleTimeZone;
 
 #[cfg(target_os = "windows")]
 use windows::get_local_time_zone;
+
+#[cfg(target_os = "linux")]
+use linux::get_local_time_zone;
 
 /// A time zone is an offset, in minutes, from a standard time zone: Universal Coordinated Time
 pub trait TimeZone:

@@ -12,9 +12,12 @@ resolver = "2"
 default = ["std", "local", "now"]
 
 alloc = []
-local = ["dep:win32"]
-now = ["dep:win32"]
+local = ["dep:win32", "dep:linux"]
+now = ["dep:win32", "dep:linux"]
 std = ["alloc"]
 
 [target.'cfg(windows)'.dependencies]
 win32 = { git = "https://github.com/shipsimfan/lib-win32", optional = true }
+
+[target.'cfg(unix)'.dependencies]
+linux = { git = "https://github.com/shipsimfan/lib-linux", optional = true }
