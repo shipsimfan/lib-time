@@ -13,7 +13,7 @@ default = ["std", "local", "now"]
 
 alloc = []
 local = ["dep:win32"]
-now = []
+now = ["dep:win32"]
 std = ["alloc"]
 
 [target.'cfg(windows)'.dependencies]

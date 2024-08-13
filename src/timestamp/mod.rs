@@ -1,5 +1,11 @@
 use crate::{SimpleTimeZone, TimeZone};
 
+#[cfg(target_os = "windows")]
+mod windows;
+
+#[cfg(target_os = "windows")]
+use windows::get_system_time;
+
 /// A point in time
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Timestamp<T: TimeZone = SimpleTimeZone> {
@@ -36,13 +42,15 @@ impl<T: TimeZone> Timestamp<T> {
     /// Gets the current timestamp in UTC
     #[cfg(feature = "now")]
     pub fn now_utc() -> Self {
-        todo!()
+        Timestamp::new_utc(get_system_time())
     }
 
     /// Gets the current timestamp in the local timezone
     #[cfg(all(feature = "now", feature = "local"))]
     pub fn now_local() -> Self {
-        todo!()
+        let mut time_zone = Timestamp::now_utc();
+        time_zone.change_timezone(T::local());
+        time_zone
     }
 
     /// Gets the timestamp in nanoseconds
