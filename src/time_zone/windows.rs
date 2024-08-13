@@ -37,7 +37,7 @@ pub(super) fn get_local_time_zone() -> (i16, alloc::string::String) {
     (-(bias as i16), name)
 }
 
-#[cfg(not(feature = "alloc", feature = "local"))]
+#[cfg(all(not(feature = "alloc"), feature = "local"))]
 pub(super) fn get_local_time_zone() -> i16 {
     let mut time_zone_info = TIME_ZONE_INFORMATION::default();
     let result = unsafe { win32::GetTimeZoneInformation(&mut time_zone_info) };

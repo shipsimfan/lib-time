@@ -6,10 +6,10 @@ mod windows;
 #[cfg(target_os = "linux")]
 mod linux;
 
-#[cfg(target_os = "windows")]
+#[cfg(all(target_os = "windows", feature = "now"))]
 use windows::get_system_time;
 
-#[cfg(target_os = "linux")]
+#[cfg(all(target_os = "linux", feature = "now"))]
 use linux::get_system_time;
 
 /// A point in time
@@ -131,4 +131,9 @@ impl<T: TimeZone> From<std::time::SystemTime> for Timestamp<T> {
         let timestamp = duration.as_nanos() as i128;
         Timestamp::new_utc(timestamp)
     }
+}
+
+#[test]
+fn testing() {
+    println!("{}", Timestamp::<SimpleTimeZone>::now_utc())
 }

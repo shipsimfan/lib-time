@@ -5,7 +5,7 @@ version = 3
 [[package]]
 name = "linux"
 version = "0.1.0"
-source = "git+https://github.com/shipsimfan/lib-linux#d81ec4c0ec5d0c2ffa2549c343d9cbcde3d892ee"
+source = "git+https://github.com/shipsimfan/lib-linux#a7da6d0c45ea46d76ecfc0339fb8e345dbae3f93"
 
 [[package]]
 name = "time"
