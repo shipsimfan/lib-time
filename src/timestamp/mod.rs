@@ -132,8 +132,3 @@ impl<T: TimeZone> From<std::time::SystemTime> for Timestamp<T> {
         Timestamp::new_utc(timestamp)
     }
 }
-
-#[test]
-fn testing() {
-    println!("{}", Timestamp::<SimpleTimeZone>::now_utc())
-}
