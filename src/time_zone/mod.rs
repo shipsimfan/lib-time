@@ -19,10 +19,10 @@ pub use named::NamedTimeZone;
 pub use no::NoTimeZone;
 pub use simple::SimpleTimeZone;
 
-#[cfg(target_os = "windows")]
+#[cfg(all(target_os = "windows", feature = "local"))]
 use windows::get_local_time_zone;
 
-#[cfg(target_os = "linux")]
+#[cfg(all(target_os = "linux", feature = "local"))]
 use linux::get_local_time_zone;
 
 /// A time zone is an offset, in minutes, from a standard time zone: Universal Coordinated Time

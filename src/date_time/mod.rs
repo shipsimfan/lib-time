@@ -9,9 +9,18 @@ mod into_timestamp;
 mod iso8601;
 mod short;
 
+#[cfg(target_os = "windows")]
+mod windows;
+
 pub use full::DateTimeFullDisplay;
 pub use iso8601::DateTimeISO8601Display;
 pub use short::DateTimeShortDisplay;
+
+#[cfg(all(target_os = "windows", feature = "now"))]
+use windows::get_current_date_time_utc;
+
+#[cfg(all(target_os = "windows", feature = "now", feature = "local"))]
+use windows::get_current_date_time_local;
 
 /// A point in time described by its date and time
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -112,6 +121,18 @@ impl<T: TimeZone> DateTime<T> {
             nanosecond,
             time_zone,
         }
+    }
+
+    /// Creates a [`DateTime`] for the current time in UTC
+    #[cfg(feature = "now")]
+    pub fn now() -> Self {
+        get_current_date_time_utc()
+    }
+
+    /// Creates a [`DateTime`] for the current time in local time
+    #[cfg(all(feature = "now", feature = "local"))]
+    pub fn now_local() -> Self {
+        get_current_date_time_local()
     }
 
     /// Gets the year, positive values are in the common era (CE), negative values are before the
