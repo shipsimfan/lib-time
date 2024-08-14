@@ -14,7 +14,7 @@ mod windows;
 #[cfg(all(target_os = "linux"))]
 mod linux;
 
-pub use iso8601::ISO8601TimeZoneDisplay;
+pub use iso8601::TimeZoneISO8601Display;
 pub use named::NamedTimeZone;
 pub use no::NoTimeZone;
 pub use simple::SimpleTimeZone;
@@ -40,7 +40,7 @@ pub trait TimeZone:
     fn offset(&self) -> i16;
 
     /// Creates an [`ISO8601TimeZoneDisplay`] that displays this time zone in ISO 8601 format
-    fn iso8601(&self) -> ISO8601TimeZoneDisplay {
-        ISO8601TimeZoneDisplay::new(self)
+    fn iso8601(&self) -> TimeZoneISO8601Display {
+        TimeZoneISO8601Display::new(self)
     }
 }

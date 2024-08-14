@@ -1,16 +1,16 @@
 use crate::TimeZone;
 
 /// Displays a time zone in ISO 8601 format
-pub struct ISO8601TimeZoneDisplay(i16);
+pub struct TimeZoneISO8601Display(i16);
 
-impl ISO8601TimeZoneDisplay {
+impl TimeZoneISO8601Display {
     /// Creates a new [`ISO8601TimeZoneDisplay`] for `time_zone`
     pub fn new<T: TimeZone>(time_zone: &T) -> Self {
-        ISO8601TimeZoneDisplay(time_zone.offset())
+        TimeZoneISO8601Display(time_zone.offset())
     }
 }
 
-impl core::fmt::Display for ISO8601TimeZoneDisplay {
+impl core::fmt::Display for TimeZoneISO8601Display {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         if self.0 == 0 {
             return f.write_str("Z");
