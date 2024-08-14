@@ -19,23 +19,27 @@ impl<'a, T: TimeZone> DateTimeFullDisplay<'a, T> {
     }
 
     /// Set to display using 24 hour time
-    pub fn _24_hour(&mut self) {
+    pub fn _24_hour(mut self) -> Self {
         self._24_hour = true;
+        self
     }
 
     /// Set to display using 12 hour time
-    pub fn _12_hour(&mut self) {
+    pub fn _12_hour(mut self) -> Self {
         self._24_hour = false;
+        self
     }
 
     /// Show the weekday
-    pub fn show_weekday(&mut self) {
+    pub fn show_weekday(mut self) -> Self {
         self.weekday = true;
+        self
     }
 
     /// Don't show the weekday
-    pub fn hide_weekday(&mut self) {
+    pub fn hide_weekday(mut self) -> Self {
         self.weekday = false;
+        self
     }
 }
 
@@ -51,16 +55,21 @@ impl<'a, T: TimeZone> core::fmt::Display for DateTimeFullDisplay<'a, T> {
 
         write!(
             f,
-            "{} {}{}, {} ",
+            "{} {}{}, {} {} ",
             MONTH_NAMES[self.date_time.month as usize],
             self.date_time.day,
-            match self.date_time.day.get() % 10 {
-                1 => "st",
-                2 => "nd",
-                3 => "rd",
+            match self.date_time.day.get() {
+                1 | 21 | 31 => "st",
+                2 | 22 => "nd",
+                3 | 23 => "rd",
                 _ => "th",
             },
-            self.date_time.year
+            self.date_time.year.abs(),
+            if self.date_time.year.is_positive() {
+                "CE"
+            } else {
+                "BCE"
+            }
         )?;
 
         if self._24_hour {

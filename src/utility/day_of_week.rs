@@ -15,10 +15,13 @@ pub const fn day_of_week(year: NonZeroI32, month: u8, day: NonZeroU8) -> u8 {
     assert!(month < 12);
     assert!(day.get() <= month_length(year, month).get());
 
+    let positive = year.is_positive();
+    let year = year.abs();
+
     let k = day.get() as isize;
     let m = MONTH_VALUE[if month < 2 { month + 10 } else { month - 2 } as usize] as isize;
     let c = (year.get() / 100) as isize;
     let y = (year.get() % 100) as isize;
 
-    ((k + m - (2 * c) + y + (y / 4) + (c / 4)) % 7).abs() as u8
+    ((k + m + y + (y / 4) + (c / 4) - (2 * c)) % 7).abs() as u8
 }

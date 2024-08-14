@@ -3,7 +3,9 @@ use crate::{
 };
 use core::num::{NonZeroI32, NonZeroU8};
 
+mod from_timestamp;
 mod full;
+mod into_timestamp;
 mod iso8601;
 mod short;
 

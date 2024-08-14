@@ -116,6 +116,11 @@ impl<T: TimeZone> Timestamp<T> {
         self.timestamp += (difference as i128) * (1_000 * 1_000 * 1_000 * 60);
         self.time_zone = new_timezone;
     }
+
+    /// Removes the timezone from this
+    pub(crate) fn take_timezone(self) -> T {
+        self.time_zone
+    }
 }
 
 impl<T: TimeZone> core::fmt::Display for Timestamp<T> {
