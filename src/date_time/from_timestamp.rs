@@ -58,11 +58,3 @@ impl<T: TimeZone> From<SystemTime> for DateTime<T> {
         Timestamp::<T>::from(system_time).into()
     }
 }
-
-#[test]
-fn testing() {
-    let mut date_time: DateTime = Timestamp::now_local().into();
-    date_time.set_year(NonZeroI32::new(1506).unwrap());
-
-    println!("{}", date_time.full_display());
-}

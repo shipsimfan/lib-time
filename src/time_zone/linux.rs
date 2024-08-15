@@ -18,11 +18,6 @@ pub(super) fn get_local_time_zone() -> (i16, alloc::string::String) {
     (offset as _, name)
 }
 
-#[test]
-fn testing() {
-    get_local_time_zone();
-}
-
 #[cfg(all(not(feature = "alloc"), feature = "local"))]
 pub(super) fn get_local_time_zone() -> i16 {
     tzset_once();
