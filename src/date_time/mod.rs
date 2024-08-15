@@ -340,9 +340,7 @@ impl<T: TimeZone> DateTime<T> {
 
     // TODO: strftime
 
-    // TODO: From<TimeStamp>
-
-    // TODO: now() and now_local()
+    // TODO: Into<TimeStamp>
 }
 
 impl<T: TimeZone> core::fmt::Display for DateTime<T> {
