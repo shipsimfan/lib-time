@@ -1,5 +1,6 @@
 use crate::{
     day_of_week, day_of_year, is_leap_year, month_length, week_of_year, SimpleTimeZone, TimeZone,
+    Timestamp,
 };
 use core::num::{NonZeroI32, NonZeroU8};
 
@@ -12,6 +13,9 @@ mod short;
 #[cfg(target_os = "windows")]
 mod windows;
 
+#[cfg(target_os = "linux")]
+mod linux;
+
 pub use full::DateTimeFullDisplay;
 pub use iso8601::DateTimeISO8601Display;
 pub use short::DateTimeShortDisplay;
@@ -21,6 +25,12 @@ use windows::get_current_date_time_utc;
 
 #[cfg(all(target_os = "windows", feature = "now", feature = "local"))]
 use windows::get_current_date_time_local;
+
+#[cfg(all(target_os = "linux", feature = "now"))]
+use linux::get_current_date_time_utc;
+
+#[cfg(all(target_os = "linux", feature = "now", feature = "local"))]
+use linux::get_current_date_time_local;
 
 /// A point in time described by its date and time
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]

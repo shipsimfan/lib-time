@@ -1,16 +1,18 @@
-use std::sync::Once;
-
-static TZ_SET: Once = Once::new();
-
 #[cfg(all(feature = "alloc", feature = "local"))]
 pub(super) fn get_local_time_zone() -> (i16, alloc::string::String) {
-    tzset_once();
+    let time = unsafe { linux::time::time(core::ptr::null_mut()) };
+    let localtime = unsafe { linux::time::localtime(&time) };
+    let localtime = if localtime == core::ptr::null_mut() {
+        return (0, alloc::string::String::new());
+    } else {
+        unsafe { &*localtime }
+    };
 
-    let offset = -unsafe { linux::time::timezone } / 60;
-    let name = if unsafe { linux::time::tzname[0] } == core::ptr::null() {
+    let offset = localtime.gmtoff / 60;
+    let name = if localtime.zone == core::ptr::null() {
         alloc::string::String::new()
     } else {
-        unsafe { std::ffi::CStr::from_ptr(linux::time::tzname[0]) }
+        unsafe { std::ffi::CStr::from_ptr(localtime.zone) }
             .to_string_lossy()
             .to_string()
     };
@@ -20,11 +22,13 @@ pub(super) fn get_local_time_zone() -> (i16, alloc::string::String) {
 
 #[cfg(all(not(feature = "alloc"), feature = "local"))]
 pub(super) fn get_local_time_zone() -> i16 {
-    tzset_once();
+    let time = unsafe { linux::time::time(core::ptr::null_mut()) };
+    let localtime = unsafe { linux::time::localtime(&time) };
+    let localtime = if localtime == core::ptr::null_mut() {
+        return (0, alloc::string::String::new());
+    } else {
+        unsafe { &*localtime }
+    };
 
-    (-unsafe { linux::time::timezone } / 60) as _
-}
-
-fn tzset_once() {
-    TZ_SET.call_once(|| unsafe { linux::time::tzset() });
+    localtime.gmtoff / 60
 }

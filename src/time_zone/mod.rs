@@ -11,7 +11,7 @@ mod simple;
 #[cfg(target_os = "windows")]
 mod windows;
 
-#[cfg(all(target_os = "linux"))]
+#[cfg(all(target_os = "linux", target_env = "gnu"))]
 mod linux;
 
 pub use iso8601::TimeZoneISO8601Display;
@@ -22,7 +22,7 @@ pub use simple::SimpleTimeZone;
 #[cfg(all(target_os = "windows", feature = "local"))]
 use windows::get_local_time_zone;
 
-#[cfg(all(target_os = "linux", feature = "local"))]
+#[cfg(all(target_os = "linux", target_env = "gnu", feature = "local"))]
 use linux::get_local_time_zone;
 
 /// A time zone is an offset, in minutes, from a standard time zone: Universal Coordinated Time
